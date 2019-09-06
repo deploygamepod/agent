@@ -30,9 +30,6 @@ build docker:
 
 distribute dockerhub:
   stage: distribute
-  only:
-  only:
-  - tags
   before_script:
   - docker login -u $CI_DOCKERHUB_USER -p $CI_DOCKERHUB_PASSWORD docker.io
   variables:
@@ -47,7 +44,6 @@ distribute dockerhub:
 
 release dockerhub:
   stage: release
-  only:
   only:
   - tags
   before_script:
