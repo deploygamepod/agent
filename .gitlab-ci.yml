@@ -6,7 +6,7 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
   CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG # i.e gitlab.com/gamepod/agent:ef4gb56
-  CONTAINER_DEVEL_IMAGE: $CI_REGISTRY_IMAGE:devel
+  CONTAINER_DEVEL_IMAGE: $CI_REGISTRY_IMAGE:devel # i.e gitlab.com/gamepod/agent:devel
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest # i.e gitlab.com/gamepod/agent:latest
   CONTAINER_RELEASE_VERSIONED: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG # i.e gitlab.com/gamepod/agent:v0.0.1
 
