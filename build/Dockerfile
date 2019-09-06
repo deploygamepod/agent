@@ -7,6 +7,14 @@ ENV GOFLAGS "-gcflags=all=-trimpath=${GOPATH} -asmflags=all=-trimpath=${GOPATH}"
 
 WORKDIR $GOPATH/src/gamepod.cc/agent
 
+# By copying the go mod files and running download before
+# copying the source, we can allow Docker to cache dependencies
+# between docker builds, speeding up the build process.
+# See: https://medium.com/@petomalina/using-go-mod-download-to-speed-up-golang-docker-builds-707591336888
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
 COPY . $GOPATH/src/gamepod.cc/agent
 
 RUN go build $GOFLAGS -o $GOPATH/bin/gamepod-operator gamepod.cc/agent/cmd/manager

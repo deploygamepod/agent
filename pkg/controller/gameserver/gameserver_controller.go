@@ -2,6 +2,7 @@ package gameserver
 
 import (
 	"context"
+	"reflect"
 
 	gamepodv1alpha1 "gamepod.cc/agent/pkg/apis/gamepod/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
@@ -86,9 +87,9 @@ func (r *ReconcileGameServer) Reconcile(request reconcile.Request) (reconcile.Re
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
 	reqLogger.Info("Reconciling GameServer")
 
-	// Fetch the GameServer instance
-	instance := &gamepodv1alpha1.GameServer{}
-	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
+	// Fetch the GameServer gameServer
+	gameServer := &gamepodv1alpha1.GameServer{}
+	err := r.client.Get(context.TODO(), request.NamespacedName, gameServer)
 	if err != nil {
 		if errors.IsNotFound(err) {
 			// Request object not found, could have been deleted after reconcile request.
@@ -101,10 +102,10 @@ func (r *ReconcileGameServer) Reconcile(request reconcile.Request) (reconcile.Re
 	}
 
 	// Define a new Pod object
-	pod := newPodForCR(instance)
+	pod := newPodForCR(gameServer)
 
-	// Set GameServer instance as the owner and controller
-	if err := controllerutil.SetControllerReference(instance, pod, r.scheme); err != nil {
+	// Set GameServer gameServer as the owner and controller
+	if err := controllerutil.SetControllerReference(gameServer, pod, r.scheme); err != nil {
 		return reconcile.Result{}, err
 	}
 
@@ -133,7 +134,7 @@ func (r *ReconcileGameServer) Reconcile(request reconcile.Request) (reconcile.Re
 	}
 	if !reflect.DeepEqual(gameServer.Status, status) {
 		gameServer.Status = status
-		err := r.client.Update(context.TODO(), podSet)
+		err := r.client.Update(context.TODO(), gameServer)
 		if err != nil {
 			reqLogger.Error(err, "failed to update the gameserver")
 			return reconcile.Result{}, err
