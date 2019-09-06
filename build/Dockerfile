@@ -30,6 +30,8 @@ ENV OPERATOR=/usr/local/bin/gamepod-operator \
 COPY --from=builder /go/bin/gamepod-operator ${OPERATOR}
 
 COPY build/bin /usr/local/bin
+RUN chmod +x /usr/local/bin/user_setup
+RUN chmod +x /usr/local/bin/entrypoint
 RUN  /usr/local/bin/user_setup
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
