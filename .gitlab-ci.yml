@@ -42,7 +42,7 @@ distribute dockerhub:
   stage: distribute
   before_script:
   - echo "using Docker user $DOCKERHUB_USER"
-  - docker login -u=$DOCKERHUB_USER -p=$DOCKERHUB_PASSWORD docker.io
+  - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD docker.io
   variables:
     IMAGE_COMMIT: gamepod/agent:$CI_COMMIT_REF_SLUG
     IMAGE_DEVEL: gamepod/agent:devel
@@ -59,7 +59,7 @@ release dockerhub:
   - tags
   before_script:
   - echo "using Docker user $DOCKERHUB_USER"
-  - docker login -u=$DOCKERHUB_USER -p=$DOCKERHUB_PASSWORD docker.io
+  - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD docker.io
   variables:
     IMAGE_TAGGED: gamepod/agent:$CI_COMMIT_TAG
     IMAGE_LATEST: gamepod/agent:latest
