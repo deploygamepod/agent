@@ -28,6 +28,7 @@ type GameServerStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // GameServer is the Schema for the gameservers API
+// +genclient
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Game",type="string",JSONPath=".spec.game",description="name of the game for the server"

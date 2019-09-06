@@ -89,3 +89,17 @@ We need to generate the Cluster Service Version manifest. Ensure to specify the 
 ```
 operator-sdk olm-catalog gen-csv --csv-version CURRENT_VERSION --from-version PREVIOUS_VERSION
 ```
+
+# Development
+
+## Client Gen
+
+Install the code-generation tools (run outside of project directory).
+```
+go get k8s.io/code-generator/...
+```
+
+Run the client generator inside the project directory.
+```
+make gen-clientset
+```

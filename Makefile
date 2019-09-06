@@ -28,3 +28,6 @@ teardown:
 	kubectl delete -f deploy/role_binding.yaml
 	kubectl delete -f deploy/crds/gamepod_v1alpha1_gameserver_crd.yaml
 	kubectl delete -f deploy/operator.build.yaml
+gen: gen-clientset
+gen-clientset:
+	client-gen --input="gamepod/v1alpha1" --input-base="gamepod.cc/agent/pkg/apis" --output-package="gamepod.cc/agent/pkg/" --clientset-name="client" -v 1
