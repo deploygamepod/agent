@@ -129,7 +129,7 @@ func (r *ReconcileGameServer) Reconcile(request reconcile.Request) (reconcile.Re
 
 	// Update GameServer status if necessary
 	status := gamepodv1alpha1.GameServerStatus{
-		PodName: pod.GetObjectMeta().GetName()
+		PodName: pod.GetObjectMeta().GetName(),
 	}
 	if !reflect.DeepEqual(gameServer.Status, status) {
 		gameServer.Status = status
