@@ -27,9 +27,9 @@ build docker:
   script:
     # Attempt to pull the last image built as a cache
     - docker pull $CONTAINER_DEVEL_IMAGE || true
-    # Cache workaround for dind
+    # Cache workaround for dind. See: https://gitlab.com/gitlab-org/gitlab-ce/issues/17861#note_86965920
     - mkdir -p image_cache/
-    - export IMAGE_FILE=$CONTAINER_DEVEL_IMAGE
+    - export IMAGE_FILE=image_cache/agent.tar
     - '[ -f "$IMAGE_FILE" ] && docker load -i "$IMAGE_FILE"'
     # Build the image
     - docker build --cache-from $CONTAINER_DEVEL_IMAGE -f build/Dockerfile -t $CONTAINER_TEST_IMAGE -t $CONTAINER_DEVEL_IMAGE .
