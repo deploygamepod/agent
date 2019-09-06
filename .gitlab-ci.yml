@@ -1,0 +1,37 @@
+stages:
+  - build
+  - release
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG # i.e gitlab.com/gamepod/agent:ef4gb56
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest # i.e gitlab.com/gamepod/agent:latest
+  CONTAINER_RELEASE_VERSIONED: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG # i.e gitlab.com/gamepod/agent:v0.0.1
+
+image: docker:stable
+
+services:
+  - docker:dind
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build docker:
+  stage: build
+  script:
+    - operator-sdk build $CONTAINER_TEST_IMAGE
+    - docker push $CONTAINER_TEST_IMAGE
+
+release docker:
+  stage: release
+  only:
+  - master
+  - tags
+  script:
+    # push the latest image
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_VERSIONED
+    - docker push $CONTAINER_RELEASE_VERSIONED
+    - docker tag $CONTAINER_RELEASE_VERSIONED $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
