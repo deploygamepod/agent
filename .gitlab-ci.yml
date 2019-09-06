@@ -21,12 +21,22 @@ before_script:
 
 build docker:
   stage: build
+  cache:
+    paths:
+      - image_cache/
   script:
     # Attempt to pull the last image built as a cache
     - docker pull $CONTAINER_DEVEL_IMAGE || true
+    # Cache workaround for dind
+    - mkdir -p image_cache/
+    - export IMAGE_FILE=$CONTAINER_DEVEL_IMAGE
+    - '[ -f "$IMAGE_FILE" ] && docker load -i "$IMAGE_FILE"'
+    # Build the image
     - docker build --cache-from $CONTAINER_DEVEL_IMAGE -f build/Dockerfile -t $CONTAINER_TEST_IMAGE -t $CONTAINER_DEVEL_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
     - docker push $CONTAINER_DEVEL_IMAGE
+    # Cache workaround for dind
+    - '[ -f "$IMAGE_FILE" ] || docker save -o "$IMAGE_FILE" "$CONTAINER_DEVEL_IMAGE"'
 
 distribute dockerhub:
   stage: distribute
