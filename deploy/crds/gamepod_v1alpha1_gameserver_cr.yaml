@@ -1,0 +1,6 @@
+apiVersion: gamepod.cc/v1alpha1
+kind: GameServer
+metadata:
+  name: example-gameserver
+spec:
+  game: 'minecraft:1.12-spigot'
