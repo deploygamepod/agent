@@ -1,6 +1,6 @@
 stages:
   - build
-  - release
+  - distribute
 
 variables:
   DOCKER_HOST: tcp://docker:2375
@@ -30,12 +30,11 @@ build docker:
 release docker:
   stage: release
   only:
-  - master
   - tags
   script:
     # push the latest image
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_VERSIONED
     - docker push $CONTAINER_RELEASE_VERSIONED
-    - docker tag $CONTAINER_RELEASE_VERSIONED $CONTAINER_RELEASE_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
