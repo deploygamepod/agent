@@ -1,16 +1,15 @@
-FROM golang:1.10-alpine3.8 AS builder
+FROM golang:1.13-alpine3.10 AS builder
 
-ENV GOPATH /go
 ENV CGO_ENABLED 0
 ENV GOOS linux
 ENV GOARCH amd64
-ENV GOFLAGS "-gcflags all=-trimpath=${GOPATH} -asmflags all=-trimpath=${GOPATH}"
+ENV GOFLAGS "-gcflags=all=-trimpath=${GOPATH} -asmflags=all=-trimpath=${GOPATH}"
 
-WORKDIR /go/src/gamepod.cc/agent
+WORKDIR $GOPATH/src/gamepod.cc/agent
 
-COPY . /go/src/gamepod.cc/agent
+COPY . $GOPATH/src/gamepod.cc/agent
 
-RUN go build $GOFLAGS -o /go/bin/gamepod-operator gamepod.cc/agent
+RUN go build $GOFLAGS -o $GOPATH/bin/gamepod-operator gamepod.cc/agent/cmd/manager
 
 FROM registry.access.redhat.com/ubi7/ubi-minimal:latest
 
