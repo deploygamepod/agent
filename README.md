@@ -97,6 +97,11 @@ operator-sdk olm-catalog gen-csv --csv-version CURRENT_VERSION --from-version PR
 Install the code-generation tools (run outside of project directory).
 ```
 go get k8s.io/code-generator/...
+cd $GOPATH/src/k8s.io/code-generator/
+git fetch --tags
+# MUST install version kubernetes-1.13.4
+git checkout kubernetes-1.13.4
+go install k8s.io/code-generator/cmd/client-gen
 ```
 
 Run the client generator inside the project directory.

@@ -4,12 +4,13 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BINARY_NAME=agent
-GOFLAGS="-gcflags=all=-trimpath=${GOPATH} -asmflags=all=-trimpath=${GOPATH}"
+GOFLAGS="-gcflags=all=-trimpath=${GOPATH}"# -asmflags=all=-trimpath=${GOPATH}"
 
 all: test build
 test:
 	$(GOTEST) -v ./...
-build:
+build: $(BINARY_NAME)
+$(BINARY_NAME):
 	$(GOBUILD) $(GOFLAGS) -o $(BINARY_NAME) -v gamepod.cc/agent/cmd/manager
 clean: 
 	$(GOCLEAN)
