@@ -6,6 +6,7 @@ GOGET=$(GOCMD) get
 BINARY_NAME=agent
 GOFLAGS="-gcflags=all=-trimpath=${GOPATH}"# -asmflags=all=-trimpath=${GOPATH}"
 
+.PHONY: deploy teardown
 all: test build
 test:
 	$(GOTEST) -v ./...
